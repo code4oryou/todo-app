@@ -1,32 +1,35 @@
+// src/App.js
 import React, { useState } from 'react';
-import './App.css';
+import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
-import AddTask from './components/AddTask';
 
-function App() {
+const App = () => {
   const [tasks, setTasks] = useState([]);
 
-  const addTask = (task) => {
-    setTasks([...tasks, { text: task, isCompleted: false }]);
+  const addTask = (taskName) => {
+    const newTask = { name: taskName, completed: false };
+    setTasks([...tasks, newTask]);
   };
 
   const deleteTask = (index) => {
-    setTasks(tasks.filter((_, i) => i !== index));
+    const newTasks = tasks.filter((_, i) => i !== index);
+    setTasks(newTasks);
   };
 
-  const toggleCompleteTask = (index) => {
-    const newTasks = [...tasks];
-    newTasks[index].isCompleted = !newTasks[index].isCompleted;
+  const toggleCompletion = (index) => {
+    const newTasks = tasks.map((task, i) =>
+      i === index ? { ...task, completed: !task.completed } : task
+    );
     setTasks(newTasks);
   };
 
   return (
-    <div className="App">
+    <div>
       <h1>To-Do App</h1>
-      <AddTask addTask={addTask} />
-      <TaskList tasks={tasks} deleteTask={deleteTask} toggleCompleteTask={toggleCompleteTask} />
+      <TaskForm addTask={addTask} />
+      <TaskList tasks={tasks} deleteTask={deleteTask} toggleCompletion={toggleCompletion} />
     </div>
   );
-}
+};
 
 export default App;
