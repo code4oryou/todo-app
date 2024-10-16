@@ -7,14 +7,24 @@ function App() {
   const [tasks, setTasks] = useState([]);
 
   const addTask = (task) => {
-    setTasks([...tasks, task]);
+    setTasks([...tasks, { text: task, isCompleted: false }]);
+  };
+
+  const deleteTask = (index) => {
+    setTasks(tasks.filter((_, i) => i !== index));
+  };
+
+  const toggleCompleteTask = (index) => {
+    const newTasks = [...tasks];
+    newTasks[index].isCompleted = !newTasks[index].isCompleted;
+    setTasks(newTasks);
   };
 
   return (
     <div className="App">
       <h1>To-Do App</h1>
       <AddTask addTask={addTask} />
-      <TaskList tasks={tasks} />
+      <TaskList tasks={tasks} deleteTask={deleteTask} toggleCompleteTask={toggleCompleteTask} />
     </div>
   );
 }
